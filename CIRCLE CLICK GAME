@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click the Circle Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div id="root" class="text-center">
+      <h1 class="text-3xl font-bold mb-6">Click the Circle Game</h1>
+      <p class="text-lg mb-4">Score: <span id="score">0</span></p>
+      <div id="game-area" class="relative w-full h-96 bg-gray-200 overflow-hidden"></div>
+    </div>
+
+    <script>
+      const gameArea = document.getElementById("game-area");
+      const scoreDisplay = document.getElementById("score");
+      let score = 0;
+
+      function getRandomPosition(size) {
+        const x = Math.random() * (gameArea.offsetWidth - size);
+        const y = Math.random() * (gameArea.offsetHeight - size);
+        return { x, y };
+      }
+
+      function createCircle() {
+        const size = Math.random() * 50 + 30; // Circle size between 30 and 80px
+        const { x, y } = getRandomPosition(size);
+
+        const circle = document.createElement("div");
+        circle.classList.add("circle", "bg-red-500");
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        circle.style.left = `${x}px`;
+        circle.style.top = `${y}px`;
+
+        circle.addEventListener("click", () => {
+          score++;
+          scoreDisplay.textContent = score;
+          circle.remove();
+          createCircle(); // Spawn a new circle
+        });
+
+        gameArea.appendChild(circle);
+      }
+
+      // Start the game by creating the first circle
+      createCircle();
+    </script>
+  </body>
+</html>
